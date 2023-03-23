@@ -154,23 +154,24 @@ pause(){
 
 # list source Ethernet interfaces to scan from
 sourceinterfaces() {
-printf '\n\r%s\n\n' "${BRIGHT}${BLUE}[i]${NORMAL} The following Interfaces are available"
-ifconfig | awk '{ if (substr($1,1,1) ~ /^[a-d]/ ) print $1 }' | cut -d " " -f1 |grep -v "ether" |cut -d ":" -f1
-printf '\n\r%s\n' "${BRIGHT}${RED}------------------------------------------------------"
-printf '\r%s\n' "${BRIGHT}${RED}[?]${NORMAL} Enter the interface to scan from as the source"
-printf '\r%s\n\n' "${BRIGHT}${RED}------------------------------------------------------${NORMAL}"
+    printf '\n\r%s\n\n' "${BRIGHT}${BLUE}[i]${NORMAL} The following Interfaces are available"
+    ifconfig | awk '/^[a-zA-Z0-9]+:/ { print substr($1, 1, length($1)-1) }'
+    printf '\n\r%s\n' "${BRIGHT}${RED}------------------------------------------------------"
+    printf '\r%s\n' "${BRIGHT}${RED}[?]${NORMAL} Enter the interface to scan from as the source"
+    printf '\r%s\n\n' "${BRIGHT}${RED}------------------------------------------------------${NORMAL}"
 
-read INT
+    read INT
 
-ifconfig | awk '{ if (substr($1,1,1) ~ /^[a-d]/ ) print $1 }' | cut -d " " -f1| grep -i -w  "$INT" >/dev/null
+    ifconfig | awk "/^$INT:/ { print substr(\$1, 1, length(\$1)-1) }" | grep -i -w "$INT" >/dev/null
 
-if [ $? = 1 ]
-        then
-                printf '\n \r%s %s\n\n' "${BRIGHT}${RED}[!]${NORMAL}" "Sorry the interface you entered does not exist! - check and try again."
-                sourceinterfaces
-fi
-printf '\n'
+    if [ $? = 1 ]
+    then
+        printf '\n \r%s %s\n\n' "${BRIGHT}${RED}[!]${NORMAL}" "Sorry the interface you entered does not exist! - check and try again."
+        sourceinterfaces
+    fi
+    printf '\n'
 }
+
 
 show_menudtpnotfound() {
 printf '\n\r%s\n' "${BRIGHT}${RED}--------------------------------------------------------------------------------------"
