@@ -155,14 +155,14 @@ pause(){
 # list source Ethernet interfaces to scan from
 sourceinterfaces() {
 printf '\n\r%s\n\n' "${BRIGHT}${BLUE}[i]${NORMAL} The following Interfaces are available"
-ifconfig |grep -o "eth.*:" |grep -v "ether" |cut -d ":" -f1
+ifconfig | awk '{ if (substr($1,1,1) ~ /^[a-d]/ ) print $1 }' | cut -d " " -f1 |grep -v "ether" |cut -d ":" -f1
 printf '\n\r%s\n' "${BRIGHT}${RED}------------------------------------------------------"
 printf '\r%s\n' "${BRIGHT}${RED}[?]${NORMAL} Enter the interface to scan from as the source"
 printf '\r%s\n\n' "${BRIGHT}${RED}------------------------------------------------------${NORMAL}"
 
 read INT
 
-ip addr |grep -o "eth.*:" |grep -v "ether" |cut -d ":" -f1 | grep -i -w  "$INT" >/dev/null
+ifconfig | awk '{ if (substr($1,1,1) ~ /^[a-d]/ ) print $1 }' | cut -d " " -f1| grep -i -w  "$INT" >/dev/null
 
 if [ $? = 1 ]
         then
