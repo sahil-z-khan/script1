@@ -8,7 +8,7 @@ def process_packet(packet):
         dst_port = packet[TCP].dport
 
         if src_port == 80 or dst_port == 80:
-            print(f"HTTP traffic detected: {src_ip}:{src_port} -> {dst_ip}:{dst_port}")
+            print("HTTP traffic detected: {}:{} -> {}:{}".format(src_ip, src_port, dst_ip, dst_port))
             print(packet[Raw].load.decode(errors='ignore'))
 
 sniff(filter="tcp", prn=process_packet)
